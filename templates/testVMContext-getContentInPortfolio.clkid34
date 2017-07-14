@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Test Template For : VMContext.getContentInPortfolio</title>
+</head>
+<body>
+<h4>Items added by CMS User</h4>
+#set($cmsUserAddedList = $wma.getContentInPortfolio(true))
+Count: $cmsUserAddedList.size()
+<table border="1">
+    <tr>
+        <td>S.No.</td>
+        <td>Dest</td>
+        <td>Content</td>
+        <td>Date Added</td>
+    </tr>
+#set($v = 1)
+#foreach($item in $cmsUserAddedList)
+#set($dest = $cms.websiteSection($item.destId))
+    <tr>
+        <td>$v</td>
+        <td>$item.destId (expected 0)</td>
+        <td>$item.contentId</td>
+        <td>$item.dateAdded</td>
+    </tr>
+#set($v = $v + 1)
+#end
+</table>
+
+<hr />
+<h4>Items added by visitor</h4>
+#set($visitorAddedList = $wma.getContentInPortfolio(false))
+Count: $visitorAddedList.size()
+<table border="1">
+    <tr>
+        <td>S.No.</td>
+        <td>Dest</td>
+        <td>Content</td>
+        <td>Date Added</td>
+    </tr>
+#set($v = 1)
+#foreach($item in $visitorAddedList)
+#set($dest = $cms.websiteSection($item.destId))
+    <tr>
+        <td>$v</td>
+        <td>$item.destId ($dest.url)</td>
+        <td>$item.contentId ($cms.content($item.contentId, $dest.path).title)</td>
+        <td>$item.dateAdded</td>
+    </tr>
+#set($v = $v + 1)
+#end
+</table>
+<hr />
+</body>
+</html>

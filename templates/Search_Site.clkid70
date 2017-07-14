@@ -1,0 +1,11 @@
+#set($search=$cms.newSearch)
+
+$search.addContentType("Article")
+
+$search.addKeywords("batalla", "title")
+
+$search.setLanguage("es")
+
+#foreach($result in $search.execute())
+      $result.title<br/>
+#end

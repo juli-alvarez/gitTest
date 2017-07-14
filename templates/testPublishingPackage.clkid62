@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Test Publishing Package</title>
+</head>
+<body>
+    <table border="1px solid black">
+    <tr>
+        <th>Content ID</th>
+        <th>Title</th>
+        <th>Live Version</th>
+    </tr>
+     #foreach($link in $cms.links)
+          <tr>
+                     <td>$link.ID</td>
+                     <td>$link.title</td>
+                     <td>$link.version</td>
+          </tr>
+     #end
+    </table>
+</body>
+</html>

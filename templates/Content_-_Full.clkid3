@@ -1,0 +1,24 @@
+#if($contentInst) #else #set($contentInst = $cms.content) #end
+
+Title: $contentInst.content.title <br>
+ID: $contentInst.id <br>
+Author: $contentInst.content.author <br>
+Text1: $contentInst.content.text1 <br>
+Text2: $contentInst.content.text2 <br>
+Text4: $contentInst.content.text4 <br>
+Text8: $contentInst.content.text8 <br>
+Text15: $contentInst.content.text15 <br>
+HTML: $contentInst.content.html <br>
+Boolean: $contentInst.content.boolean <br>
+True: $contentInst.content.trueBoolean <br>
+False: $contentInst.content.falseBoolean <br>
+Select: $contentInst.content.select <br>
+Array: #foreach($value in $contentInst.content.array) $value #end <br>
+Bounded Array: #foreach($value in $contentInst.content.boundedArray) $value #end <br>
+Complex: <br>
+<table>
+<tr><td>Column 1</td><td>Column 2</td><td>Column 3</td></tr>
+#foreach($row in $contentInst.content.complex)
+<tr><td>$row.column1</td><td>$row.column2</td><td>$row.column3</td></tr>
+#end <br><br>
+

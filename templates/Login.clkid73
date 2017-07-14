@@ -1,0 +1,364 @@
+#set($excludeMediaCode = true)##
+#set($loginPage = true)##
+$string.trim($cms.template("OMB-Header"))##
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '$cms.getExternalAppID($cms.getDomainID())',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<script type="text/javascript">
+   var validateRecaptcha = function() {
+        var v = grecaptcha.getResponse();
+
+        if(v.length == 0) {
+             $('#recaptchaErrorMsg').css('display','block');
+             $('#div_id_captcha').addClass("error");
+         }
+         else
+         {
+            $('#recaptchaErrorMsg').css('display','none');
+            $('#div_id_captcha').removeClass("error");
+         }
+    };
+</script>
+#set($action = "/s")
+$string.trim($cms.template("OMB-Recaptcha Validation"))##
+<div class="container">
+    <div class="row-fluid login-register">
+        <div class="span6">
+            <h2 class="welcome">Login</h2>
+            <br>
+            <form id="login-form" class="form-horizontal" method="post" action="/s" autocomplete="off" _lpchecked="1">
+            	##<input type="hidden" name="csrf" value="$cms.generateCsrfToken("visitor")" />
+            	##<input type="hidden" name="csrfField1" value="visitor">
+                <input type="hidden" name="action" value="doLogin">
+                
+                #if($req.param("rurl") && $req.param("rurl") != "")##
+	                #set($rurl = "$!req.param('rurl')")##
+	                #set($rurl = $util.encode.xssRemoveHtml($rurl))##
+	                #set($rurl = $util.encode.unURL($rurl))##
+	                #if($string.startsWith($rurl,'http'))
+	                	#set($rurl = "https://${cms.envHost}${cms.domain}")##
+	                #end
+	                <input type="hidden" name="rurl" value="$!rurl" />
+                #else##
+                	<input type="hidden" name="rurl" value="https://${cms.envHost}${cms.domain}" />
+                #end##
+                ##<input type="hidden" name="csrfmiddlewaretoken" value="O1WjfhWRjmijAa39bka10x9AwIL9923B">
+                #if($subscription.error && $req.param("action") && $req.param("action") == "doLogin")##
+                <div class="alert alert-block alert-error">
+                    <ul>
+                        <li>$!subscription.errorCode : $!subscription.errorMessage</li>
+                        <li>Please enter a correct email and password. Note that both fields may be case-sensitive.</li>
+                    </ul>
+                </div>
+                #end##
+                <div id="div_id_username" class="control-group">
+                    <label for="email" class="control-label requiredField">E-mail<span class="asteriskField">*</span></label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="email" maxlength="254" name="email" type="text">
+                    </div>
+                </div>
+                <div id="div_id_password" class="control-group">
+                    <label for="id_password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_password" name="password" type="password">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-pink" id="submitForm" name="submitForm">Go</button>
+                    </div>
+                </div>
+            </form>
+            #*
+            <script>
+
+        jQuery("#submitForm").click(function(e) {
+          e.preventDefault();
+          console.log("Submitting the Form");
+          var email = jQuery("input[name=email]").val();
+          console.log("Email Form :"+email);
+          var dataURL = "http://${cms.envHost}${cms.domain}/templates/Check-Disqus_User?email="+email;
+          jQuery.ajax({
+            type: "POST",
+            url: dataURL,
+            success: function(msg) {
+              var result = jQuery.trim(msg);
+              if(result.indexOf("true") > -1){
+                alert("Please use Disqus Link to login");
+              }else{
+                jQuery("#loginForm").submit();
+                window.close()
+              }
+             }
+           });
+        });
+            </script>
+            *#
+
+            <hr class="dotted">
+            <div class="row-fluid ac">
+                <p id="sso-login-error" class="text-error"><strong></strong></p>
+                ##<a href="javascript:checkLoginState();"><img src="//media.swissre.com/designimages/OMB-facebook_login.png" alt="Login with Facebook"></a>
+                <a href="/login/facebook"><img src="//media.swissre.com/designimages/OMB-facebook_login.png" alt="Login with Facebook"></a>
+                <a href="/login/twitter"><img src="//media.swissre.com/designimages/OMB-twitter_login.png" alt="Login with Twitter"></a><br><br>
+                <a href="/login/linkedin/"><img src="//media.swissre.com/designimages/OMB-linkedin_login.png" alt="Login with LinkedIn"></a>
+                <a href="/login/google/"><img src="//media.swissre.com/designimages/OMB-google_login.png" alt="Login with Google"></a><br><br>
+                <a target="_blank" href="s?action=passwordReset">Lost password?</a>
+                <!-- Form for SSOLogin Once the user is there in the WCM -->
+                <!-- Multiple Profiles will be created if multiple emails with same SSO Profile ID are created -->
+                <form name="ssoLoginForm" id="ssoLoginForm" method="post" action="/s?action=doSSOLogin">
+                    ##<input type="hidden" name="csrf" value="$cms.generateCsrfToken("visitor")" />
+                    ##<input type="hidden" name="csrfField1" value="visitor">
+                    <input type="hidden" name="action" value="doSSOLogin" />
+                    <input type="hidden" name="externalProfileId" id="multipleSSOProfId" />
+                    <input type="hidden" name="email" id="multipleEmail" />
+                    <input type="hidden" name="externalData" value="" />
+                    <input type="hidden" name="userId" id="userId" />
+                    #if($req.param("rurl") && $req.param("rurl") != "")##
+	                    #set($rurl = "$!req.param('rurl')")##
+	                    #set($rurl = $util.encode.xssRemoveHtml($rurl))##
+	                    #set($rurl = $util.encode.unURL($rurl))##
+	                    #if($string.startsWith($rurl,'http'))
+		                	#set($rurl = "https://${cms.envHost}${cms.domain}")##
+		                #end
+                    	<input type="hidden" name="rurl" id="ssorurl" value="$!rurl" />
+                    #else##
+                    	<input type="hidden" name="rurl" id="ssorurl" value="https://${cms.envHost}${cms.domain}" />
+                    #end##
+
+                    #if($req.intParam("errorCode") && $req.intParam("errorCode") == 209)##
+                    #if($req.param("errorDetails") && $req.param("errorDetails") != "")##
+                    #set($errorDetails = "")##
+                    #set($errorDetails = $util.encode.xssRemoveHtml($req.param("errorDetails")))##
+                    #end##
+                    #set($messageErr = $errorDetails)
+                    #set($messageErr = $string.substring($messageErr,$string.indexOf($messageErr,'-')))
+                    #set($messageErr = $string.substring($messageErr,1))
+                    #set($messageErrArray = $string.split($messageErr,","))
+                    <p>
+                        $!termFacebook
+                        $!termFBLogin <br>
+                        #foreach($i in $messageErrArray)##
+                        <input type="radio" name="useridOption" id="useridOption" value="$i" />
+                        $cms.getSubscriptionUser($string.parseInt($i)).username<br>
+                        #end##
+                        <input type="button" name="multiprofile" value="Submit" onclick="javascript:callMultiProfile();" />
+                        #end## <br>
+                    </p>
+                </form>
+                <form id="reg-form" name="doRegForm" method="post" action="/s?action=doReg">
+                    ##<input type="hidden" name="csrf" value="$cms.generateCsrfToken("visitor")" />
+                    ##<input type="hidden" name="csrfField1" value="visitor">
+                    ##<input type="hidden" name="action" id="action" value="doReg" />
+                    <input type="hidden" id="reg-password" name="password1" value="" />
+                    <input type="hidden" id="reg-confirmPassword" name="password2" value="" />
+                    <input type="hidden" name="rurl" value="" />
+                    <input type="hidden" id="reg-username" name="username" value="" />
+                    <input type="hidden" id="reg-firstName" name="firstname" value="" />
+                    <input type="hidden" id="reg-lastName" name="lastname" value="" />
+                    <input type="hidden" id="reg-email" name="email" value="" />
+                    <input type="hidden" id="reg-gender" name="gender" value="" />
+                    <input type="hidden" id="reg-birthDate" name="birthdate" value="" />
+                    <input type="hidden" id="reg-externalLink" name="externalLink" />
+                    <input type="hidden" id="reg-externalProfileId" name="externalProfileId" />
+                    <input type="hidden" id="reg-requiresConfirmation" name="requiresConfirmation" />
+                    <input type="hidden" id="reg-externalData" name="externalData" />
+                    <input type="hidden" name="socialPicURL" id="reg-socialPicURL" value="" />
+                    <input type="hidden" name="google" id="reg-google" value="" />
+
+                    <input type="hidden" name="about" id="reg-about" value="" />
+                    <input type="hidden" name="isExternalSSOUser" id="reg-isExternalSSOUser" value="true" />
+                </form>
+            </div>
+        </div>
+        <div class="span6">
+            <h2 class="welcome">Create user profile</h2><br>
+            #set($email = $util.encode.xssRemoveHtml($req.param("email")))##
+            #if($email && $email != "")##
+            #set($lastname = $util.encode.xssRemoveHtml($req.param("lastname")))##
+            #set($firstname = $util.encode.xssRemoveHtml($req.param("firstname")))##
+            #set($username = $util.encode.xssRemoveHtml($req.param("username")))##
+            #set($email = $util.encode.xssRemoveHtml($req.param("email")))##
+            #end##
+
+            <form id="regForm" class="form-horizontal" method="post" action="/s" autocomplete="off">
+            	##<input type="hidden" name="csrf" value="$cms.generateCsrfToken("visitor")" />
+            	##<input type="hidden" name="csrfField1" value="visitor">
+                <input type="hidden" name="action" value="reg" />
+                <input type="hidden" name="submitted" value="y" />
+                <input type="hidden" name="list.12056" value="subscribe" />
+                <input type="hidden" name="format.12056" value="html" />
+                #if($req.param("rurl") && $req.param("rurl") != "")##
+	                #set($rurl = "$!req.param('rurl')")##
+	                #set($rurl = $util.encode.unURL($rurl))##
+	                #set($rurl = $util.encode.xssRemoveHtml($rurl))##
+	                #if($string.startsWith($rurl,'http'))
+	                	#set($rurl = "https://${cms.envHost}${cms.domain}")##
+	                #end
+               		<input type="hidden" name="rurl" value="$!rurl" />
+                #else##
+                	<input type="hidden" name="rurl" value="https://${cms.envHost}${cms.domain}" />
+                #end##
+                ##<input type="hidden" name="csrfmiddlewaretoken" value="O1WjfhWRjmijAa39bka10x9AwIL9923B">
+                <div id="div_id_name" class="control-group">
+                    <label for="id_fname" class="control-label requiredField">Display Name<span class="asteriskField">*</span></label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_fname" maxlength="128" name="firstname" type="text" #if($firstname)value="$!firstname" #end>
+                    </div>
+                </div>
+                #*
+                <div id="div_id_name" class="control-group">
+                    <label for="id_lname" class="control-label requiredField">Last name<span class=""></span></label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_lname" maxlength="128" name="lastname" type="text" #if($lastname)value="$!lastname" #end>
+                    </div>
+                </div>
+                *#
+                ##This email address is already in use. Please supply a different email address.
+                <div id="div_id_email" class="control-group">
+                    <label for="id_email" class="control-label requiredField">Email address<span class="asteriskField">*</span></label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_email" maxlength="75" name="email" type="text" #if($email)value="$!email" #end>
+                        #if($subscription.errorCode == 301 || $subscription.errorCode == 302)##
+                        <p id="error_1_id_email" class="help-block"><strong>This email address is already in use. Please supply a different email address.</strong></p>
+                        #end##
+                    </div>
+                </div>
+                <div id="div_id_password1" class="control-group">
+                    <label for="id_password1" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
+                    <div class="controls"><input class="textinput textInput" id="id_password1" name="password1" type="password"> <p id="hint_id_password1" class="help-block">Your password must be at least 8 characters long and contain both upper and lower case letters and at least 1 number</p></div>
+                </div>
+                <div id="div_id_password2" class="control-group">
+                    <label for="id_password2" class="control-label requiredField">Confirm password<span class="asteriskField">*</span></label>
+                    <div class="controls"><input class="textinput textInput" id="id_password2" name="password2" type="password"> <p id="hint_id_password2" class="help-block">Enter your password again</p></div>
+                </div>
+                <div id="div_id_policy_has_been_accepted" class="control-group">
+                    <div class="controls">
+                        <label for="id_policy_has_been_accepted" class="checkbox requiredField">
+                            <input class="checkboxinput" id="id_policy_has_been_accepted" name="policy_has_been_accepted" type="checkbox">
+                            Please tick to confirm you have read and agreed to the <a target="_blank" href="http://www.swissre.com/legal_notice.html">Legal Notice</a> and <a target="_blank" href="http://www.swissre.com/privacy_policy.html">Privacy Policy</a>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="div_id_captcha" class="control-group">
+                    <label for="id_captcha" class="control-label requiredField">Captcha<span class="asteriskField">*</span></label>
+                    <div class="controls">
+                        <input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">
+                        <div class="g-recaptcha" data-sitekey="$rPublicKey" data-callback="validateRecaptcha"></div>
+                        #if($subscription.errorCode == 308 || $recaptchaError)##
+                        <p id="error_1_id_captcha" class="help-block"><strong>This field is required.</strong></p>
+                        #if($recaptchaError)##
+                        <p id="error_1_id_captcha" class="help-block"><strong>The response parameter is invalid or malformed.</strong></p>
+                        #end##
+                        #if($subscription.errorMessage)##
+                        <p id="error_1_id_captcha" class="help-block"><strong>$!subscription.errorMessage.</strong></p>
+                        #end##
+                        #if($subscription.errorDetails)##
+                        <p id="error_1_id_captcha" class="help-block"><strong>$!subscription.errorDetails.</strong></p>
+                        #end##
+
+                        #end##
+                    </div>
+                </div>
+                <div class="control-group error">
+                    <div class="controls error">
+                        <p id="recaptchaErrorMsg" class="help-inline" style="display:none;"><strong>This field is required.</strong></p>
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-pink">Go</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <div class="control-group error"><p class="help-inline">* Mandatory field</p></div>
+        </div>
+    </div>
+
+</div>
+
+#* START OF JS DEPENDENCIES *#
+#set($pageJavaScriptReferences = [])##
+#set($foo = $pageJavaScriptReferences.add("OMB-jquery-1.7.2.min.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-jquery.placeholder.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-all.js"))##
+###set($foo = $pageJavaScriptReferences.add("OMB-ga.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-GA_SWISSRE_NEW.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-world_map.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-common.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-util.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-stats.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-openminds.js"))##
+#set($foo = $pageJavaScriptReferences.add("https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-custom.js"))##
+#set($foo = $pageJavaScriptReferences.add("OMB-d3.v3.min.js"))##
+###set($foo = $pageJavaScriptReferences.add("OMB-api.js"))##
+###set($foo = $pageJavaScriptReferences.add("OMB-recaptcha__en.js"))##
+#* END OF JS DEPENDENCIES *#
+
+
+$string.trim($cms.template("OMB-Footer"))##
+
+<style>
+    .modal-header {
+        display: none;
+    }
+</style>
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-body">
+        <div class="joyride-content-wrapper" role="dialog">
+            <h4 style="color:#e34b90">Notification !!!</h4>
+            <p>
+                The Open Minds Blog has moved to a new technology platform. A new password was sent to the email address in your profile. If you did not receive the new password please click on 'Reset Password'<a id="IdRestPassord" href="/s?action=passwordReminder"> below </a>.
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-pink" data-dismiss="modal" style="float:right" aria-hidden="true" id="ClosebtnID">Close</button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        if (readCookie("FirstOpenPage") == null) {
+            $('#myModal').modal('show');
+        } else {
+            CreateCookies();
+        }
+
+        $("#ClosebtnID , #IdRestPassord").click(function () {
+
+            CreateCookies();
+
+        })
+
+    })
+    function CreateCookies() {
+        createCookie("FirstOpenPage", "No", 5000)
+    }
+</script>
+
+
+

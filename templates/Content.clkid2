@@ -1,0 +1,2 @@
+Section: $cms.destination.name <br>
+Content: $cms.content.id - $cms.content.title <br>
