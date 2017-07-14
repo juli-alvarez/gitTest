@@ -215,3 +215,220 @@
 
 </body>
 </html>
+#macro( renderField  $field $value $testInfo)
+<tr>
+<td>$field.label</td>
+<td><input type="text" name="$field.tag" value="$value" /></td>
+<td>$testInfo</td>
+#end
+
+<html>
+<head>
+    <title>Profile Field Value Validation Unit Test - $util.newDate.time </title>
+</head>
+<body>
+<h4>Validation Unit Test Fields</h4>
+
+#if($subscription.error) 
+<b> Error Info :  $subscription.error</b>
+<table>
+    <tr>
+        <td>errorCode: $subscription.errorCode </td>
+    </tr> 
+    <tr>
+        <td>errorDetails: $subscription.errorDetails</td>
+    </tr>
+</table>
+#end
+
+
+<h3>Short String Field Tests</h3>
+<h4>Current Value: $wma.getProfile().getField("shortStringField").toString()</h4>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <table border="1">
+            #renderField($wma.getProfileField("shortStringField") "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" "Expect Valid, actual len=250")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+    <form name="shortStringForm2" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <table border="1">
+            #renderField($wma.getProfileField("shortStringField") "1"  "Expect Valid, actual len<250")
+        </table>
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        <input type="submit"/>
+    </form>
+
+    <form name="shortStringForm3" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("shortStringField") "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890EXTRA"  "Expect InValid, actual len>250")
+        </table>
+        <input type="submit"/>
+    </form>
+
+<h3>More than one field is invalid</h3>
+<h4>Current Value: $wma.getProfile().getField("shortStringField").toString()</h4>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <table border="1">
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+            #renderField($wma.getProfileField("shortStringField") "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890EXTRA"  "Expect InValid, actual len>250")
+            #renderField($wma.getProfileField("numberField") "abc" "Expect Invalid, non-numeric value")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+<h3>Decimal Value Tests</h3>
+<h4>Current Value: $wma.getProfile().getField("floatNumber2DecimalsField").toString()</h4>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "12.34" "Expect Valid, actual len=12.34")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "12.3" "Expect Valid, actual len=12.3")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "12.0" "Expect Valid, actual len=12.0")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "12" "Expect Valid, actual len=12.0")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "-12.34" "Expect Valid, actual len=-12.34")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "12.3499" "Expect Valid, no rounding, actual len=12.34")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "12.00" "Expect Valid, actual len=12.0")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("floatNumber2DecimalsField") "1a2.00" "Expect Invalid error message")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+<h3>Email Value Tests</h3>
+<h4>Current Value: $wma.getProfile().getField("emailTypedEmailField").toString()</h4>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("emailTypedEmailField") "abc@abc.com" "Expect Valid, actual len=abc@abc.com")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+    <form name="shortStringForm1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+        <table border="1">
+            #renderField($wma.getProfileField("emailTypedEmailField") "abc" "Expect Invalid message, actual len=abc")
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+
+
+
+
+
+
+
+</body>
+</html>

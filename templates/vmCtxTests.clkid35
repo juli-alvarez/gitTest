@@ -6,3 +6,11 @@
 #end
 </ol>
 
+<h3>Destination: $cms.destination.name</h3>
+
+<ol>
+#foreach($child in $cms.destination.children) 
+<li><a href="$child.url">$child.name</a></li>
+#end
+</ol>
+
