@@ -13,3 +13,18 @@ $cms.destination.name
     <li><a href="$article.url">$article.title</a> (ID: $article.id) </li>
 #end
 </ul>
+$cms.destination.name
+
+<h5>Child Sections</h5>
+<ul>
+#foreach($wss in $cms.websiteSection.children)
+    <li><a href="$wss.url">$wss.name</a> ( ID: $wss.id )</li>
+#end
+</ul>
+
+<h5>Content Items</h5>
+<ul>
+#foreach($article in $cms.links)
+    <li><a href="$article.url">$article.title</a> (ID: $article.id) </li>
+#end
+</ul>
