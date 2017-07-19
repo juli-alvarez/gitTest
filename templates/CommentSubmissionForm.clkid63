@@ -108,3 +108,113 @@
 	
 	</body>
 </html>
+<html>
+	<head>
+		<title>Comment Form</title>
+		<script type="text/javascript"> 
+			function displayNewComment() { 
+				// Assumes "msg" element and "commentSection" elements in HTML 
+				var msgP = document.getElementById("msg"); 
+			    msgP.innerHTML = "Thank you! Your comment has been added below."; 
+				if(comment != "") { 
+					if(!flagged) { 
+						var commentSection = document.getElementById("commentSection"); 
+						if(name == "") { 
+							name = "Anonymous"; 
+						} 
+						var nameDiv = document.createElement("div"); 
+						nameDiv.setAttribute("class", "postedBy"); 
+						nameDiv.innerHTML = "Posted by " + name; 
+						commentSection.appendChild(nameDiv); 
+						var commentDiv = document.createElement("div"); 
+						commentDiv.innerHTML = comment; 
+						commentSection.appendChild(commentDiv); 
+					} else { 
+						msgP.innerHTML = "Comment has been sent for approval"; 
+					} 
+				} 
+                                window.location.reload();
+			} 
+		</script>
+	</head>
+		<body>
+		<div>
+			<div>Content ID: $cms.content.id</div>
+ 			<div>Title: $cms.content.title</div>
+		</div>
+                <hr />
+                <div><b>NOTE:</b>If an added comment does not show in the list below, try refreshing the whole page</div>
+		#commentCode()
+		<p id="msg"></p>
+		<form method="POST" onsubmit="return postForm(this, true, displayNewComment);">
+		<div id="title">Post a comment!</div>
+		<div class="row">Name: <input name="name" type="text" /></div>
+		<div class="row">Comment: <textarea cols="20" rows="4" name="field"></textarea></div>
+		<input type="submit" value="Submit"></form>
+		<div id="commentSection">
+                #foreach($comment in $util.sort($feedback.comments, "- ID"))
+   		        <div class="postedBy">
+			        #if($comment.name == "")Anonymous#else$comment.name#end said:
+			</div>
+			<div>$comment.comment</div>
+                        <hr />
+		#end
+		</div>
+	
+	</body>
+</html>
+<html>
+	<head>
+		<title>Comment Form</title>
+		<script type="text/javascript"> 
+			function displayNewComment() { 
+				// Assumes "msg" element and "commentSection" elements in HTML 
+				var msgP = document.getElementById("msg"); 
+			    msgP.innerHTML = "Thank you! Your comment has been added below."; 
+				if(comment != "") { 
+					if(!flagged) { 
+						var commentSection = document.getElementById("commentSection"); 
+						if(name == "") { 
+							name = "Anonymous"; 
+						} 
+						var nameDiv = document.createElement("div"); 
+						nameDiv.setAttribute("class", "postedBy"); 
+						nameDiv.innerHTML = "Posted by " + name; 
+						commentSection.appendChild(nameDiv); 
+						var commentDiv = document.createElement("div"); 
+						commentDiv.innerHTML = comment; 
+						commentSection.appendChild(commentDiv); 
+					} else { 
+						msgP.innerHTML = "Comment has been sent for approval"; 
+					} 
+				} 
+                                window.location.reload();
+			} 
+		</script>
+	</head>
+		<body>
+		<div>
+			<div>Content ID: $cms.content.id</div>
+ 			<div>Title: $cms.content.title</div>
+		</div>
+                <hr />
+                <div><b>NOTE:</b>If an added comment does not show in the list below, try refreshing the whole page</div>
+		#commentCode()
+		<p id="msg"></p>
+		<form method="POST" onsubmit="return postForm(this, true, displayNewComment);">
+		<div id="title">Post a comment!</div>
+		<div class="row">Name: <input name="name" type="text" /></div>
+		<div class="row">Comment: <textarea cols="20" rows="4" name="field"></textarea></div>
+		<input type="submit" value="Submit"></form>
+		<div id="commentSection">
+                #foreach($comment in $util.sort($feedback.comments, "- ID"))
+   		        <div class="postedBy">
+			        #if($comment.name == "")Anonymous#else$comment.name#end said:
+			</div>
+			<div>$comment.comment</div>
+                        <hr />
+		#end
+		</div>
+	
+	</body>
+</html>

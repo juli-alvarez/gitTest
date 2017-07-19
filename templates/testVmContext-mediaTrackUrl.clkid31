@@ -44,3 +44,49 @@ Test case for verifying functionality of WMA's Media access tracking functionali
 </table>
 </body>
 </html>
+<html>
+<head>
+<title>testVmContext-trackMediaUrl</title>
+</head>
+<body>
+<h3>
+Test case for verifying functionality of WMA's Media access tracking functionality 
+</h3>
+#set ($testMediaId = 1)
+#set ($noTrackUrl = $cms.media($testMediaId).url)
+#set ($trackUrl = $wma.getMediaTrackingUrl($cms.media($testMediaId)))
+<table border="1">
+    <tr>
+        <td>Media URL Without Tracking</td>
+        <td><a href="$noTrackUrl">$noTrackUrl</a></td>
+    </tr>
+    <tr>
+        <td>Media URL With Tracking</td>
+        <td><a href="$trackUrl">$trackUrl</a></td>
+    </tr>
+</table>
+</body>
+</html>
+<html>
+<head>
+<title>testVmContext-trackMediaUrl</title>
+</head>
+<body>
+<h3>
+Test case for verifying functionality of WMA's Media access tracking functionality 
+</h3>
+#set ($testMediaId = 1)
+#set ($noTrackUrl = $cms.media($testMediaId).url)
+#set ($trackUrl = $wma.getMediaTrackingUrl($cms.media($testMediaId)))
+<table border="1">
+    <tr>
+        <td>Media URL Without Tracking</td>
+        <td><a href="$noTrackUrl">$noTrackUrl</a></td>
+    </tr>
+    <tr>
+        <td>Media URL With Tracking</td>
+        <td><a href="$trackUrl">$trackUrl</a></td>
+    </tr>
+</table>
+</body>
+</html>

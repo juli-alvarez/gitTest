@@ -90,3 +90,95 @@ Cannot Update
         </table>
         <input type="submit"/>
     </form>
+#macro( renderField  $field $value $updateable)
+<tr>
+<td>$field.label</td>
+<td>
+#if($updateable) 
+<input type="text" name="$field.tag" value="$value" />
+#else
+Cannot Update
+#end
+</td>
+<td> $wma.getProfile().getField("$field.tag").toString()</td>
+#end
+
+
+<h4>Switch Anonymous To Already Existing Visitor When Submitting Email</h4>
+<h5>Steps to execute this test</h5>
+<ol>
+    <li>Disable Subscription module for CustomerOne. Use SQL: <i>delete from cmstest.customermodules where customerid=1 and moduleid=9;</i></li>
+    <li>Restart apps for the change to take effect</li>
+    <li>Clear cookies in both IE and Firefox to get rid of visitor related cookies</li>
+    <li>Navigate to this page in both browsers</li>
+    <li>In Firefox specify "Test-A" for short string filed and some email for email field and submit. Verify that the current values are changed to what you set</li>
+    <li>In IE go to the same page and specify specify "Test-B" and the same email as in firefox. Submit the form</li>
+    <li>The resulting form in IE should show "Test-A" instead of "Test-B" as the current value and email as specified.</li>
+</ol>
+
+    <form name="form1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <table border="1">
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+<table border="1">
+<tr>
+    <td>Field Label</td>
+    <td>Input Control</td>
+    <td>Current Value</td>
+</tr>
+            #renderField($wma.getProfileField("shortStringField") "TEST-1" true)
+            #renderField($wma.getProfileField("email") "" false)
+</table>
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>
+#macro( renderField  $field $value $updateable)
+<tr>
+<td>$field.label</td>
+<td>
+#if($updateable) 
+<input type="text" name="$field.tag" value="$value" />
+#else
+Cannot Update
+#end
+</td>
+<td> $wma.getProfile().getField("$field.tag").toString()</td>
+#end
+
+
+<h4>Switch Anonymous To Already Existing Visitor When Submitting Email</h4>
+<h5>Steps to execute this test</h5>
+<ol>
+    <li>Disable Subscription module for CustomerOne. Use SQL: <i>delete from cmstest.customermodules where customerid=1 and moduleid=9;</i></li>
+    <li>Restart apps for the change to take effect</li>
+    <li>Clear cookies in both IE and Firefox to get rid of visitor related cookies</li>
+    <li>Navigate to this page in both browsers</li>
+    <li>In Firefox specify "Test-A" for short string filed and some email for email field and submit. Verify that the current values are changed to what you set</li>
+    <li>In IE go to the same page and specify specify "Test-B" and the same email as in firefox. Submit the form</li>
+    <li>The resulting form in IE should show "Test-A" instead of "Test-B" as the current value and email as specified.</li>
+</ol>
+
+    <form name="form1" method="post" action="/s">
+        <input type="hidden" name="action" value="submitProfile" />
+        <table border="1">
+        <input type="hidden" name="errorDestId" value="$cms.websiteSection.id" />
+#if($cms.content)
+        <input type="hidden" name="errorContentId" value="$cms.content" />
+#end
+<table border="1">
+<tr>
+    <td>Field Label</td>
+    <td>Input Control</td>
+    <td>Current Value</td>
+</tr>
+            #renderField($wma.getProfileField("shortStringField") "TEST-1" true)
+            #renderField($wma.getProfileField("email") "" false)
+</table>
+           <input type="hidden" name="rurl" value="$cms.websiteSection.url" />
+        </table>
+        <input type="submit"/>
+    </form>

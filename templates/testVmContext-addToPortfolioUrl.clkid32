@@ -184,3 +184,189 @@ Test case for verifying functionality of WMA's Add Content To Portfolio.
 
 </body>
 </html>
+<html>
+<head>
+<title>testVmContext-addToPortfolioUrl</title>
+</head>
+<body>
+<h3>
+Test case for verifying functionality of WMA's Add Content To Portfolio.
+</h3>
+#set ($destIdAddContentToPortfolio = 69)
+#set ($contentIdTargettedTo69 = 401)
+#set ($contentIdNotTargettedTo69 = 42)
+#set ($invalidContentId = 10000000)
+#set ($invalidDestId = 10000000)
+
+<br>
+<h4>addToPortfolioUrl</h4>
+<table border="1">
+    <tr>
+        <td>Test Name</td>
+        <td> Expected </td>
+        <td> URL </td>
+    </tr>
+    <tr>
+#set ($testBasic = $wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69))
+        <td>testBasic</td>
+        <td>A row is added to visitorrelatedcontent table if a matching row does not already exist</td>
+        <td><a href="$testBasic">$testBasic</a></td>
+    </tr>
+    <tr>
+#set ($testContentNotTargetted = $wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $contentIdNotTargettedTo69))
+        <td>testContentNotTargetted</td>
+        <td>A row is not added.</td>
+        <td><a href="$testContentNotTargetted">$testContentNotTargetted</a></td>
+    </tr>
+    <tr>
+#set ($testInvalidContentId = $wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $invalidContentId))
+        <td>testInvalidContentId</td>
+        <td>A row is not added.</td>
+        <td><a href="$testInvalidContentId">$testInvalidContentId</a></td>
+    </tr>
+    <tr>
+#set ($testInvalidDestId = $wma.getAddContentToPortfolioUrl($invalidDestId, $contentIdTargettedTo69))
+        <td>testInvalidDestId</td>
+        <td>A row is not added.</td>
+        <td><a href="$testInvalidDestId">$testInvalidDestId</a></td>
+    </tr>
+    <tr>
+#set ($testReturnUrl = "$wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69)&rurl=$util.encode.url('http://www.google.com')" )
+        <td>testReturnUrl</td>
+        <td>A row is added and browser is redirected to google.com page</td>
+        <td><a href="$testReturnUrl">$testReturnUrl</a></td>
+    </tr>
+
+</table>
+
+<br>
+<h4>removeFromPortfolioUrl</h4>
+<table border="1">
+<tr>
+#set ($testRemoveBasic = $wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69))
+        <td>testRemoveBasic</td>
+        <td>A row if it exists, is removed from visitorrelatedcontent table</td>
+        <td><a href="$testRemoveBasic">$testRemoveBasic</a></td>
+</tr>
+#set ($testRemoveContentNotTargetted = $wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $contentIdNotTargettedTo69))
+        <td>testRemoveContentNotTargetted</td>
+        <td>No change occurs, no error is thrown</td>
+        <td><a href="$testRemoveContentNotTargetted">$testRemoveContentNotTargetted</a></td>
+    </tr>
+    <tr>
+#set ($testRemoveInvalidContentId = $wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $invalidContentId))
+        <td>testRemoveInvalidContentId</td>
+        <td>No change occurs, no error is thrown</td>
+        <td><a href="$testRemoveInvalidContentId">$testRemoveInvalidContentId</a></td>
+    </tr>
+    <tr>
+#set ($testRemoveInvalidDestId = $wma.getRemoveContentFromPortfolioUrl($invalidDestId, $contentIdTargettedTo69))
+        <td>testRemoveInvalidDestId</td>
+        <td>No change occurs, no error is thrown</td>
+        <td><a href="$testRemoveInvalidDestId">$testRemoveInvalidDestId</a></td>
+    </tr>
+    <tr>
+#set ($testRemoveReturnUrl = "$wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69)&rurl=$util.encode.url('http://www.google.com')" )
+        <td>testRemoveReturnUrl</td>
+        <td>The row is removed and browser is redirected to google.com page</td>
+        <td><a href="$testRemoveReturnUrl">$testRemoveReturnUrl</a></td>
+    </tr>
+
+
+</table>
+
+</body>
+</html>
+<html>
+<head>
+<title>testVmContext-addToPortfolioUrl</title>
+</head>
+<body>
+<h3>
+Test case for verifying functionality of WMA's Add Content To Portfolio.
+</h3>
+#set ($destIdAddContentToPortfolio = 69)
+#set ($contentIdTargettedTo69 = 401)
+#set ($contentIdNotTargettedTo69 = 42)
+#set ($invalidContentId = 10000000)
+#set ($invalidDestId = 10000000)
+
+<br>
+<h4>addToPortfolioUrl</h4>
+<table border="1">
+    <tr>
+        <td>Test Name</td>
+        <td> Expected </td>
+        <td> URL </td>
+    </tr>
+    <tr>
+#set ($testBasic = $wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69))
+        <td>testBasic</td>
+        <td>A row is added to visitorrelatedcontent table if a matching row does not already exist</td>
+        <td><a href="$testBasic">$testBasic</a></td>
+    </tr>
+    <tr>
+#set ($testContentNotTargetted = $wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $contentIdNotTargettedTo69))
+        <td>testContentNotTargetted</td>
+        <td>A row is not added.</td>
+        <td><a href="$testContentNotTargetted">$testContentNotTargetted</a></td>
+    </tr>
+    <tr>
+#set ($testInvalidContentId = $wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $invalidContentId))
+        <td>testInvalidContentId</td>
+        <td>A row is not added.</td>
+        <td><a href="$testInvalidContentId">$testInvalidContentId</a></td>
+    </tr>
+    <tr>
+#set ($testInvalidDestId = $wma.getAddContentToPortfolioUrl($invalidDestId, $contentIdTargettedTo69))
+        <td>testInvalidDestId</td>
+        <td>A row is not added.</td>
+        <td><a href="$testInvalidDestId">$testInvalidDestId</a></td>
+    </tr>
+    <tr>
+#set ($testReturnUrl = "$wma.getAddContentToPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69)&rurl=$util.encode.url('http://www.google.com')" )
+        <td>testReturnUrl</td>
+        <td>A row is added and browser is redirected to google.com page</td>
+        <td><a href="$testReturnUrl">$testReturnUrl</a></td>
+    </tr>
+
+</table>
+
+<br>
+<h4>removeFromPortfolioUrl</h4>
+<table border="1">
+<tr>
+#set ($testRemoveBasic = $wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69))
+        <td>testRemoveBasic</td>
+        <td>A row if it exists, is removed from visitorrelatedcontent table</td>
+        <td><a href="$testRemoveBasic">$testRemoveBasic</a></td>
+</tr>
+#set ($testRemoveContentNotTargetted = $wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $contentIdNotTargettedTo69))
+        <td>testRemoveContentNotTargetted</td>
+        <td>No change occurs, no error is thrown</td>
+        <td><a href="$testRemoveContentNotTargetted">$testRemoveContentNotTargetted</a></td>
+    </tr>
+    <tr>
+#set ($testRemoveInvalidContentId = $wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $invalidContentId))
+        <td>testRemoveInvalidContentId</td>
+        <td>No change occurs, no error is thrown</td>
+        <td><a href="$testRemoveInvalidContentId">$testRemoveInvalidContentId</a></td>
+    </tr>
+    <tr>
+#set ($testRemoveInvalidDestId = $wma.getRemoveContentFromPortfolioUrl($invalidDestId, $contentIdTargettedTo69))
+        <td>testRemoveInvalidDestId</td>
+        <td>No change occurs, no error is thrown</td>
+        <td><a href="$testRemoveInvalidDestId">$testRemoveInvalidDestId</a></td>
+    </tr>
+    <tr>
+#set ($testRemoveReturnUrl = "$wma.getRemoveContentFromPortfolioUrl($destIdAddContentToPortfolio, $contentIdTargettedTo69)&rurl=$util.encode.url('http://www.google.com')" )
+        <td>testRemoveReturnUrl</td>
+        <td>The row is removed and browser is redirected to google.com page</td>
+        <td><a href="$testRemoveReturnUrl">$testRemoveReturnUrl</a></td>
+    </tr>
+
+
+</table>
+
+</body>
+</html>

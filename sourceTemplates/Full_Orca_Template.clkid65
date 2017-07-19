@@ -14,3 +14,19 @@ Template body for full template.</body>
 <body>
 Template body for full template.</body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>#if($cms.content)${cms.content.title}#else${cms.destination.name}#end</title>
+</head>
+<body>
+Template body for full template.</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>#if($cms.content)${cms.content.title}#else${cms.destination.name}#end</title>
+</head>
+<body>
+Template body for full template.</body>
+</html>
